@@ -1,0 +1,52 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="./Canvasinput.js"></script>
+<script>
+
+	$(document).ready(function(){
+	    
+		var i = $("input");
+
+		console.log( i );
+
+	    i.on('keyup', function (e) {
+	        var value = $(this).val();
+	        $("body div").html(value);
+	    });
+
+	    var input = new CanvasInput({
+		  canvas: document.getElementById('canvas'),
+		  value: 'Hello Rad World',
+		  cursorColor: 'green',
+		  cursorWidth: 2,
+		  cursorPosition: 5,
+		  showCursor: true,
+		  selection: [0,5],
+		  focus: true
+		});
+
+		var caret = new CanvasInput({
+		  canvas: document.getElementById('caret'),
+		  cursorColor: 'limegreen',
+		  backgroundColor: 'black',
+		  fontColor: 'white',
+		  cursorWidth: 5
+		});
+
+	});
+
+</script>
+<style>
+	input {
+		margin: 20px auto;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+<canvas id="canvas" width="200" height="30"></canvas>
+<canvas id="caret" width="200" height="30"></canvas>
+<input class="superman" />
+</body>
+</html>

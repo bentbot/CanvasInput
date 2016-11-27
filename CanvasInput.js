@@ -42,23 +42,25 @@
     self._height = o.height || self._fontSize;
     self._padding = o.padding >= 0 ? o.padding : 5;
     self._borderWidth = o.borderWidth >= 0 ? o.borderWidth : 1;
-    self._borderColor = o.borderColor || '#959595';
-    self._borderRadius = o.borderRadius >= 0 ? o.borderRadius : 3;
+    self._borderColor = o.borderColor || 'rgba(204,204,204,1)';
+    self._borderRadius = o.borderRadius >= 0 ? o.borderRadius : 0;
     self._backgroundImage = o.backgroundImage || '';
     self._boxShadow = o.boxShadow || '1px 1px 0px rgba(255, 255, 255, 1)';
-    self._innerShadow = o.innerShadow || '0px 0px 4px rgba(0, 0, 0, 0.4)';
+    self._innerShadow = o.innerShadow || '0px 0px 4px rgba(0, 0, 0, 0)';
     self._selectionColor = o.selectionColor || 'rgba(179, 212, 253, 0.8)';
-    self._placeHolder = o.placeHolder || '';
+    self._cursorColor = o.cursorColor || '#000';
+    self._placeHolder = o.placeHolder || o.placeholder || '';
     self._value = (o.value || self._placeHolder) + '';
     self._onsubmit = o.onsubmit || function() {};
     self._onkeydown = o.onkeydown || function() {};
     self._onkeyup = o.onkeyup || function() {};
     self._onfocus = o.onfocus || function() {};
     self._onblur = o.onblur || function() {};
-    self._cursor = false;
-    self._cursorPos = 0;
-    self._hasFocus = false;
-    self._selection = [0, 0];
+    self._cursorPos = o.cursorPos || o.cursorPosition || 0;
+    self._cursorWidth = o.cursorWidth || 1;
+    self._cursor = o.cursor || o.showCursor || false;
+    self._selection = o.selection || [0, 0];
+    self._hasFocus = true;
     self._wasOver = false;
 
     // parse box shadow
@@ -152,7 +154,8 @@
 
       // update the canvas input state information from the hidden input
       self._value = self._hiddenInput.value;
-      self._cursorPos = self._hiddenInput.selectionStart;
+      self._cursorPos = self._hiddenInput.selectionEnd;
+      self._cursor = false;
       // update selection to hidden input's selection in case user did keyboard-based selection
       self._selection = [self._hiddenInput.selectionStart, self._hiddenInput.selectionEnd];
       self.render();
@@ -1098,8 +1101,8 @@
         // draw the cursor
         if (self._cursor) {
           var cursorOffset = self._textWidth(text.substring(0, self._cursorPos));
-          ctx.fillStyle = self._fontColor;
-          ctx.fillRect(paddingBorder + cursorOffset, paddingBorder, 1, self._height);
+          ctx.fillStyle = self._cursorColor;
+          ctx.fillRect(paddingBorder + cursorOffset, paddingBorder, self._cursorWidth, self._height);
         }
 
         // draw the text
